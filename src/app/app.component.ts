@@ -11,13 +11,13 @@ export class AppComponent {
 
 constructor(){
   // Initialize Firebase
- var config = {
-   apiKey: "AIzaSyAnvroHBp0TulmPODVljjKrr6c11QYqeHs",
-   authDomain: "bookstore-fb8d8.firebaseapp.com",
-   databaseURL: "https://bookstore-fb8d8.firebaseio.com",
-   projectId: "bookstore-fb8d8",
-   storageBucket: "",
-   messagingSenderId: "812544879084"
+ const config = {
+  apiKey: "AIzaSyAnvroHBp0TulmPODVljjKrr6c11QYqeHs",
+  authDomain: "bookstore-fb8d8.firebaseapp.com",
+  databaseURL: "https://bookstore-fb8d8.firebaseio.com",
+  projectId: "bookstore-fb8d8",
+  storageBucket: "bookstore-fb8d8.appspot.com",
+  messagingSenderId: "812544879084"
  };
  firebase.initializeApp(config);
 }
