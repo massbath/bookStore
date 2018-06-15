@@ -3,6 +3,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 
+
+/**
+* Composant gérant la connexion d'un utilisateur avec son mail et password
+**/
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -31,6 +35,7 @@ export class SigninComponent implements OnInit {
     const email = this.signinForm.get('email').value;
     const password = this.signinForm.get('password').value;
 
+ //Appel au service pour se connecter avec mail et password, une promise est retournée
     this.authService.signInUser(email,password).then(
       ()=>{
          this.router.navigate(['/books']);

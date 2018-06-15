@@ -5,6 +5,11 @@ import {BooksService} from '../services/books.service';
 import {Book} from '../models/book.model';
 
 
+/**
+* Composant affichant la liste des livres contenues dans la bibiliothéque,
+* en cliquant sur un des items on est redirigé vers le détail du livre.
+* Un bouton de suppression permet de retirer le livre de la collection
+**/
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
@@ -18,13 +23,16 @@ export class BookListComponent implements OnInit ,OnDestroy{
   constructor(private booksService: BooksService, private router: Router ) { }
 
   ngOnInit() {
-    //souscription su subject pour mettre à jour la liste à chaque modification du service
+
+    //Souscription su subject pour mettre à jour la liste à chaque modification du service
     this.booksSubscription = this.booksService.booksSubject.subscribe(
       (books : Book[]) =>{
         this.books = books;
       }
     );
 
+    //On initialise le listener du service qui permet de mettre à jour la collection à chaque changement dessus
+    this.booksService.getBooks();
     this.booksService.emitBooks();
   }
 
