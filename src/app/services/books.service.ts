@@ -6,6 +6,7 @@ import * as firebase from 'firebase';
 
 
 
+
 /**
 * Service de gestion des livres et de leur persistence
 **/
@@ -74,6 +75,23 @@ export class BooksService {
   * Méthode de suppression d'un livre à la bibiliothéque
   **/
   removeBook(book: Book){
+    //Suppression de la photo du storage firebase si existante
+    if(book.photo){
+
+      const indexBegin = book.photo.indexOf('images%2F')+9;
+      const indexEnd = book.photo.indexOf('?alt=media')-indexBegin;
+      const nameFile = book.photo.substr(indexBegin,indexEnd);
+      const storageRef = firebase.storage().ref().child('images/'+decodeURI(nameFile));
+      storageRef.delete().then(
+        ()=>{
+          console.log("Photo supprimé");
+        },
+        (error)=>{
+          console.log("Erreur lors de la suppression "+error);
+        }
+      )
+    }
+    //on supprime le livre de la collection interne
     const bookIndexToRemove = this.books.findIndex(
         (bookEl) => {
           if(bookEl === book) {
@@ -82,8 +100,32 @@ export class BooksService {
         }
       );
       this.books.splice(bookIndexToRemove, 1);
+
+      //on enregistre la collection qui s'est vu retiré un livre
       this.saveBooks();
-      this.emitBooks();
+      // this.emitBooks();
+  }
+
+  uploadFile(file : File){
+    return new Promise ((resolve, reject) =>{
+      const almostUniqueFileName = Date.now().toString();
+      const upload = firebase.storage().ref().child('images/'+almostUniqueFileName+file.name).put(file);
+      upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
+        //callback waiting
+        () => {
+            console.log('Chargement');
+        },
+        //callback error
+        (error) => {
+          console.log('Erreur de chargement ! :'+error);
+          reject();
+        },
+        //callback done
+        () =>{
+            resolve(upload.snapshot.downloadURL);
+          }
+      );
+    });
   }
 
 
