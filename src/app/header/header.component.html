@@ -12,10 +12,11 @@
       <li routerLinkActive="active" *ngIf= "!isAuth">
         <a routerLink="auth/signin">Connexion</a>
       </li>
-       <li>
-        <a (click)="onSignOut()"
+        <span class="navbar-text"*ngIf="isAuth">{{email}}</span>
+      <li>
+      <a (click)="onSignOut()"
             style="cursor:pointer"
-            *ngIf= "isAuth">Déconnexion</a>
+             *ngIf="isAuth">Déconnexion</a>
       </li>
     </ul>
   </div>
